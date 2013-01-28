@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <!-- The Main Product XML Block - Generated Guids are specific to this installer -->
+  <!-- Change the Manufacture if you'd prefer to have the service installed by Default under Program Files\[Your Manufacture]\HeartBeat-->
+  <Product Id="95BFFA12-8EEE-4403-81B0-0453F1DD69E9"
+           Name="HeartBeat Monitoring Service"
+           Language="1033"
+           Codepage="1252"
+           Version="1.0.0"
+           Manufacturer="Eoin.Campbell"
+           UpgradeCode="FDDA8CBE-9F0C-42F6-AA8C-F41C4A0DBD20">
+
+    <Package Id="*"
+             Keywords="Installer"
+             Description="HeartBeat Monitoring Service v1.0 Installer"
+             Comments="asdf"
+             InstallerVersion="200"
+             Languages="1033"
+             SummaryCodepage="1252"
+             Compressed="yes"
+             InstallScope="perMachine" />
+
+    <Media Id='1' Cabinet='Sample.cab' EmbedCab='yes' DiskPrompt='CD-ROM #1' />
+    <Property Id='DiskPrompt' Value="Acme's Foobar 1.0 Installation [1]" />
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="ManufacturerFolder" Name="[Manufacturer]">
+          <Directory Id="INSTALLFOLDER" Name="HeartBeat">
+            <Component Id="MainExecutable" Guid="9F30B465-2E3C-42C3-8D67-53675916FDE3">
+              <!-- TODO: Insert files, registry keys, and other resources here. -->
+              <File Id="HeartBeatEXE" Name="HeartBeat.exe" DiskId="1" Source="..\HeartBeat.InstallerSources\HeartBeat.exe" KeyPath="yes">
+                <Shortcut Id="startmenuHeartBeatConsole" 
+                          Directory="ProgramMenuDir" 
+                          Name="HeartBeat Standalone App"
+                          WorkingDirectory='INSTALLDIR' 
+                          Icon="HeartBeatIcon.exe" 
+                          IconIndex="0" 
+                          Advertise="yes" 
+                          Arguments="--console" />
+                <Shortcut Id="startmenuHeartBeatInstall" 
+                          Directory="ProgramMenuDir" 
+                          Name="HeartBeat Service Install"
+                          WorkingDirectory='INSTALLDIR' 
+                          Icon="HeartBeatIcon.exe" 
+                          IconIndex="0" 
+                          Advertise="yes" 
+                          Arguments="--install" />
+               <Shortcut Id="startmenuHeartBeatUninstall" 
+                          Directory="ProgramMenuDir" 
+                          Name="HeartBeat Service Uninstall"
+                          WorkingDirectory='INSTALLDIR' 
+                          Icon="HeartBeatIcon.exe" 
+                          IconIndex="0" 
+                          Advertise="yes" 
+                          Arguments="--uninstall" />
+               <Shortcut Id="startmenuHeartBeatStart" 
+                          Directory="ProgramMenuDir" 
+                          Name="HeartBeat Service Start"
+                          WorkingDirectory='INSTALLDIR' 
+                          Icon="HeartBeatIcon.exe" 
+                          IconIndex="0" 
+                          Advertise="yes" 
+                          Arguments="--start" />
+                <Shortcut Id="startmenuHeartBeatStop" 
+                          Directory="ProgramMenuDir" 
+                          Name="HeartBeat Service Stop"
+                          WorkingDirectory='INSTALLDIR' 
+                          Icon="HeartBeatIcon.exe" 
+                          IconIndex="0" 
+                          Advertise="yes" 
+                          Arguments="--stop" />
+                <!-- Format for Desktop Shortcut
+                  <Shortcut Id="desktopHeartBeat" 
+                          Directory="DesktopFolder" 
+                          Name="HeartBeat Monitoring Service" 
+                          WorkingDirectory='INSTALLDIR' 
+                          Icon="HeartBeatIcon.exe" 
+                          IconIndex="0" Advertise="yes" 
+                           /> -->
+              </File>
+              <File Id="HeartBeatEXECONFIG" Name="HeartBeat.exe.config" DiskId="1" Source="..\HeartBeat.InstallerSources\HeartBeat.exe.config" />
+            </Component>
+          </Directory>
+        </Directory>
+      </Directory>
+
+      <Directory Id="ProgramMenuFolder" Name="Programs">
+        <Directory Id="ProgramMenuDir" Name="HeartBeat">
+          <Component Id="ProgramMenuDir" Guid="130894B1-CB8B-41FA-9B5C-BDBA020345C4">
+            <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
+            <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" KeyPath="yes" />
+          </Component>
+        </Directory>
+      </Directory>
+
+      <Directory Id="DesktopFolder" Name="Desktop" />
+
+    </Directory>
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+
+    <Feature Id="ProductFeature" Title="HeartBeat" Level="1">
+      <ComponentRef Id='MainExecutable' />
+      <ComponentRef Id='ProgramMenuDir' />
+    </Feature>
+
+    <Icon Id="HeartBeatIcon.exe" SourceFile="..\HeartBeat.InstallerSources\HeartBeat.ico" />
+
+  </Product>
+
+</Wix>
