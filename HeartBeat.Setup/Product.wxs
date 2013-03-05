@@ -22,15 +22,27 @@
              InstallScope="perMachine" />
 
     <Media Id='1' Cabinet='Sample.cab' EmbedCab='yes' DiskPrompt='CD-ROM #1' />
-    <Property Id='DiskPrompt' Value="Acme's Foobar 1.0 Installation [1]" />
+    <Property Id='DiskPrompt' Value="HeartBeat Monitoring Service [1]" />
+
+    <UIRef Id="WixUI_Minimal" />
+    <UIRef Id="WixUI_ErrorProgressText" />
+    
+    <WixVariable Id="WixUILicenseRtf" Value="..\HeartBeat.InstallerSources\HeartBeat.Licence.rtf" />
+    <WixVariable Id="WixUIBannerBmp" Value="..\HeartBeat.InstallerSources\InstallerBanner.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="..\HeartBeat.InstallerSources\InstallerDialog.bmp" />
+    <!--<WixVariable Id="WixUIExclamationIco" Value="..\HeartBeat.InstallerSources\exclamation.ico" />
+    <WixVariable Id="WixUIInfoIco" Value="..\HeartBeat.InstallerSources\information.ico" />
+    <WixVariable Id="WixUINewIco" Value="..\HeartBeat.InstallerSources\new.ico" />
+    <WixVariable Id="WixUIUpIco" Value="..\HeartBeat.InstallerSources\up.ico" />-->
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFilesFolder">
         <Directory Id="ManufacturerFolder" Name="[Manufacturer]">
-          <Directory Id="INSTALLFOLDER" Name="HeartBeat">
+          <Directory Id="INSTALLDIR" Name="HeartBeat" >
             <Component Id="MainExecutable" Guid="9F30B465-2E3C-42C3-8D67-53675916FDE3">
               <!-- TODO: Insert files, registry keys, and other resources here. -->
-              <File Id="HeartBeatEXE" Name="HeartBeat.exe" DiskId="1" Source="..\HeartBeat.InstallerSources\HeartBeat.exe" KeyPath="yes">
+              <File Id="HeartBeatEXE" Name="HeartBeat.exe" 
+                    DiskId="1" Source="..\HeartBeat.InstallerSources\HeartBeat.exe" KeyPath="yes">
                 <Shortcut Id="startmenuHeartBeatConsole" 
                           Directory="ProgramMenuDir" 
                           Name="HeartBeat Standalone App"
@@ -82,10 +94,12 @@
               </File>
               <File Id="HeartBeatEXECONFIG" Name="HeartBeat.exe.config" DiskId="1" Source="..\HeartBeat.InstallerSources\HeartBeat.exe.config" />
             </Component>
+            <Component Id="Documentation" Guid="C1468B20-8EA1-44BB-8BA1-1C9BC5E1CC9C">
+              <File Id="HeartBeatDOCPDF" Name="HeartBeat.Documentation.pdf" DiskId="1" Source="..\HeartBeat.InstallerSources\HeartBeat.Documentation.pdf" />
+            </Component>
           </Directory>
         </Directory>
       </Directory>
-
       <Directory Id="ProgramMenuFolder" Name="Programs">
         <Directory Id="ProgramMenuDir" Name="HeartBeat">
           <Component Id="ProgramMenuDir" Guid="130894B1-CB8B-41FA-9B5C-BDBA020345C4">
@@ -94,16 +108,23 @@
           </Component>
         </Directory>
       </Directory>
-
       <Directory Id="DesktopFolder" Name="Desktop" />
-
     </Directory>
+
+    <Property Id="INSTALLDIR">
+      <RegistrySearch Id='HeartbeatRegistryInstallDir' Type='raw' Root='HKLM' Key='Software\[Manufacturer]\[ProductName]' Name='InstallDir' />
+    </Property>
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 
-    <Feature Id="ProductFeature" Title="HeartBeat" Level="1">
+    <Feature Id="ProductFeature" Title="HeartBeat Monitoring Service" Level="1" Description="HeartBeat Monitoring Service - Installer" Display="expand" ConfigurableDirectory="INSTALLDIR">
+      <Feature Id="ApplicationFeature" Title="Application" Level="1" Description="HeartBeat Monitoring Service - Core Application">
       <ComponentRef Id='MainExecutable' />
       <ComponentRef Id='ProgramMenuDir' />
+      </Feature>
+      <Feature Id="DocumentationFeature" Title="Documentation" Level="1" Description="HeartBeat Monitoring Service - Documentation">
+        <ComponentRef Id='Documentation' />
+      </Feature>
     </Feature>
 
     <Icon Id="HeartBeatIcon.exe" SourceFile="..\HeartBeat.InstallerSources\HeartBeat.ico" />
