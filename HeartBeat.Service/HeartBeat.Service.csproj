@@ -45,6 +45,9 @@
   <PropertyGroup>
     <ApplicationIcon>HeartBeat.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=5.0.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -191,7 +194,9 @@
     <Content Include="HeartBeat.ico" />
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)tools\ctt.exe" s:"$(TargetDir)HeartBeat.Service.exe.config" t:"$(SolutionDir)HeartBeat.InstallerSources\HeartBeat.exe.template.config" d:"$(SolutionDir)HeartBeat.InstallerSources\HeartBeat.exe.config"</PostBuildEvent>
+    <PostBuildEvent>"$(SolutionDir)tools\ctt.exe" s:"$(TargetDir)HeartBeat.Service.exe.config" t:"$(SolutionDir)HeartBeat.InstallerSources\HeartBeat.exe.template.config" d:"$(SolutionDir)HeartBeat.InstallerSources\HeartBeat.exe.config"
+
+"$(SolutionDir)packages\ILMerge.MSBuild.Tasks.1.0.0.3\tools\ILMerge.exe" /out:"$(SolutionDir)HeartBeat.InstallerSources\HeartBeat.exe" /target:exe /targetplatform:"v4,C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0" "$(TargetDir)HeartBeat.Service.exe" "$(TargetDir)HeartBeat.Logic.dll" "$(TargetDir)Microsoft.Practices.EnterpriseLibrary.Common.dll" "$(TargetDir)Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll" "$(TargetDir)Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.dll" "$(TargetDir)Microsoft.Practices.EnterpriseLibrary.Logging.dll" "$(TargetDir)Microsoft.Practices.ServiceLocation.dll" "$(TargetDir)Microsoft.Practices.Unity.Configuration.dll" "$(TargetDir)Microsoft.Practices.Unity.dll" "$(TargetDir)Microsoft.Practices.Unity.Interception.Configuration.dll" "$(TargetDir)Microsoft.Practices.Unity.Interception.dll" "$(TargetDir)Microsoft.Win32.TaskScheduler.dll"</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -200,7 +205,9 @@
   </Target>
   
   -->
+  <!--
+  Don't comment this back in until they sort out the issue with not being able to specify target framework.
   <Target Name="AfterBuild">
     <ILMerge InputAssemblies="@(MergeAsm)" OutputFile="$(TargetDir)..\..\HeartBeat.InstallerSources\HeartBeat.exe" TargetKind="Exe" />
-  </Target>
+  </Target>-->
 </Project>

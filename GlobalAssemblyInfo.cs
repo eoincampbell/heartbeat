@@ -9,5 +9,5 @@
 //[assembly: AssemblyTrademark("™")]
 
 [assembly: AssemblyVersion("0.3.4822")]
-[assembly: AssemblyFileVersion("0.3.4822.29163")]
+[assembly: AssemblyFileVersion("0.3.4822.31357")]
 [assembly: AssemblyInformationalVersion("HeartBeat Monitoring Service v0.3.4822 Beta")]
