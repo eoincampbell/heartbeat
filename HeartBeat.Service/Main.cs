@@ -20,6 +20,7 @@ namespace HeartBeat.Service
         {
             try
             {
+			//Here's some code changes
                 LogHelper.Information("HeartBeat Service Starting...");
                 _engine.Start();
                 LogHelper.Information("HeartBeat Service Started...");
@@ -35,6 +36,7 @@ namespace HeartBeat.Service
         {
             try
             {
+			//Here's Another
                 LogHelper.Information("HeartBeat Service Stopping...");
                 _engine.Stop();
                 LogHelper.Information("HeartBeat Service Stopped...");
